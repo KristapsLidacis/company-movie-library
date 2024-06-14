@@ -2,16 +2,14 @@
 
 namespace App\Http\Requests\API\Movie;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class StoreMovieRequest extends FormRequest
+class StoreMovieRequest extends BaseMovieRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +20,11 @@ class StoreMovieRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'data.attributes.title' => 'required|string|max:100',
+            'data.attributes.description' => 'required|string|max:500',
+            'data.attributes.ageRestriction' => 'sometimes|max:2|in:7,12,16',
+            'data.attributes.rating' => 'required|decimal:1',
+            'data.attributes.premieresAt' => 'required|date',
         ];
     }
 }

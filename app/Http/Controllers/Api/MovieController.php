@@ -6,6 +6,7 @@ use App\Models\Movie;
 use App\Http\Requests\API\Movie\StoreMovieRequest;
 use App\Http\Requests\API\Movie\UpdateMovieRequest;
 use App\Http\Resources\Api\MovieResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MovieController extends ApiController
 {
@@ -16,8 +17,9 @@ class MovieController extends ApiController
     {
         $query = Movie::query();
 
-        if(request()->has('filter') && isset(request()->get('filter')['title'])){
-            $likeStr = str_replace('*', '%', request()->get('filter')['title']);
+        $filter = request()->has('filter') ? request()->get('filter') : null;
+        if($filter && isset($filter['title'])) {
+            $likeStr = str_replace('*', '%', $filter['title']);
             $query->where('title', 'like', $likeStr);
         }
 
@@ -29,32 +31,73 @@ class MovieController extends ApiController
      */
     public function store(StoreMovieRequest $request)
     {
-        //
+        try {
+            return new MovieResource(Movie::create($request->attributeMap()));
+
+        } catch (\Throwable $th) {
+            return $this->ok('Movie could not be created', [
+                'message' => 'Movie could not be created',
+                'error' => 401,
+            ]);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Movie $movie)
+    public function show($movie_id)
     {
-        return new MovieResource($movie);
-    }
+        try {
+            $movie = Movie::findOrFail($movie_id);
 
-    /**
+            return new MovieResource($movie);
+
+        } catch (\Throwable $th) {
+
+            return $this->ok('Movie not found', [
+                'message' => 'Movie not found',
+                'error' => 401,
+            ]);
+        }
+    }
+    
+     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMovieRequest $request, Movie $movie)
+    public function update(UpdateMovieRequest $request, $movie_id)
     {
-        //
+        try {
+            $movie = Movie::findOrFail($movie_id);
+
+            $movie->update($request->attributeMap());
+
+            return new MovieResource($movie);
+
+        } catch (ModelNotFoundException $th) {
+            return $this->ok('Movie not found', [
+                'error' => 'Movie not found',
+                'status' => 401
+            ]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Movie $movie)
+    public function destroy($movie_id)
     {
-        $movie->delete();
+        try {
+            $movie = Movie::findOrFail($movie_id);
+            $movie->delete();
 
-        return $this->ok('Movie deleted');    
+            return $this->ok('Movie deleted');
+
+        } catch (ModelNotFoundException $th) {
+
+            return $this->ok('Movie not found', [
+                'error' => 'Movie not found',
+                'status' => 401
+            ]);
+        }
     }
 }
