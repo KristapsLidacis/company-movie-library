@@ -22,8 +22,12 @@ class MovieBroadcastResource extends JsonResource
                 'movieId' => $this->movie_id, 
                 'channelNr'=> $this->channel_nr,
                 'broadcastsAt' => $this->broadcasts_at,
+                $this->mergeWhen($request->routeIs('movie-broadcasts.*'), [
+                    'createdAt' => $this->created_at,   
+                    'updatedAt' => $this->updated_at,
+                ]),
             ],
-            'include' => new MovieResource($this->movie),
+            'include' => $this->when($request->routeIs('movie-broadcasts.*'), new MovieResource($this->movie)),
             'links' => [
                 'self' => route('movie-broadcasts.show', ['movie_broadcast' => $this->id]),
             ],
