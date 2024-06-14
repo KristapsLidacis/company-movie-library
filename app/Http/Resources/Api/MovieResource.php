@@ -29,6 +29,7 @@ class MovieResource extends JsonResource
                     'updatedAt' => $this->updated_at,
                 ]),
             ],
+            'includes' => $this->when($request->routeIs('movies.*'), MovieBroadcastResource::collection($this->movieBroadcasts)),
             'links' => [
                 'self' => route('movies.show', ['movie' => $this->id]),
             ],
