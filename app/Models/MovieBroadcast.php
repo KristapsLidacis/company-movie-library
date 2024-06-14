@@ -16,7 +16,7 @@ class MovieBroadcast extends Model
         'broadcasts_at',
     ];
 
-    public function movieBroadcasts(): BelongsTo
+    public function movie(): BelongsTo
     {
         return $this->belongsTo(Movie::class);
     }
