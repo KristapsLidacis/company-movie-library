@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MovieBoradcastController;
 use App\Http\Controllers\Api\MovieController;
 use App\Http\Controllers\Api\MovieMovieBoradcastsController;
 use Illuminate\Support\Facades\Route;
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::apiResource('movies', MovieController::class);
 
