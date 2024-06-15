@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Api;
 
 use App\Models\Movie;
+use App\Models\MovieBroadcast;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -29,7 +30,11 @@ class MovieResource extends JsonResource
                     'updatedAt' => $this->updated_at,
                 ]),
             ],
-            'includes' => $this->when($request->routeIs('movies.*'), MovieBroadcastResource::collection($this->movieBroadcasts)),
+            'includes' => $this->when($request->routeIs('movies.*'), function(){
+                $movieBroadcastResource = MovieBroadcastResource::collection($this->movieBroadcasts()->paginate(10))->resource;
+
+                return $movieBroadcastResource->isNotEmpty() ? $movieBroadcastResource : [];
+            }),
             'links' => [
                 'self' => route('movies.show', ['movie' => $this->id]),
             ],
