@@ -28,13 +28,20 @@ class MovieMovieBoradcastsController extends ApiController
      */
     public function show($movie_id, $movie_broadcast_id)
     {
-        $movieBroadcast = MovieBroadcast::find($movie_broadcast_id);
+        try {
+            $movieBroadcast = MovieBroadcast::findOrFail($movie_broadcast_id);
 
-        if($movieBroadcast && $movieBroadcast->movie_id == $movie_id){
+            if($movieBroadcast->movie_id != $movie_id){
+                return $this->error('Movie broadcast not found for this movie', 404);
+            }
             return new MovieBroadcastResource($movieBroadcast);
-        }
 
-        return $this->error('Movie broadcast not found for this movie', 404);
+        } catch (ModelNotFoundException $th) {
+            return $this->ok('Movie broadcast not found', [
+                'message' => 'Movie broadcast not found',
+                'error' => 404,
+            ]);
+        }
     }
 
     /**
@@ -42,12 +49,17 @@ class MovieMovieBoradcastsController extends ApiController
      */
     public function store($movie_id, StoreMovieBroadcastRequest $request)
     {
-        $movie = Movie::find($movie_id);
+        try {
+            
+           Movie::findOrFail($movie_id);
+            
+            return new MovieBroadcastResource(MovieBroadcast::create($request->attributeMap($movie_id)));
 
-        if(!$movie){
-            return $this->error('Movie not found', 404);
+        } catch (ModelNotFoundException $th) {
+            return $this->ok('Movie could not be found', [
+                'message' => 'Movie could not be found',
+                'error' => 401,
+            ]);
         }
-        
-        return new MovieBroadcastResource(MovieBroadcast::create($request->attributeMap($movie_id)));
     }
 }
