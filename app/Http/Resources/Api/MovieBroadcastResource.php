@@ -27,7 +27,7 @@ class MovieBroadcastResource extends JsonResource
                     'updatedAt' => $this->updated_at,
                 ]),
             ],
-            'releationships' => [
+            'relationships' => [
                 'movie' => [
                     'data' => [
                         'type' => class_basename(Movie::class),

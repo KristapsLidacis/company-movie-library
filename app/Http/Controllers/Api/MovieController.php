@@ -52,7 +52,7 @@ class MovieController extends ApiController
 
             return new MovieResource($movie);
 
-        } catch (\Throwable $th) {
+        } catch (ModelNotFoundException $th) {
 
             return $this->ok('Movie not found', [
                 'message' => 'Movie not found',

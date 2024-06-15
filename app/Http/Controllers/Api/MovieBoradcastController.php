@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Models\MovieBroadcast;
 use App\Http\Requests\API\MovieBroadcast\StoreMovieBroadcastRequest;
 use App\Http\Resources\Api\MovieBroadcastResource;
@@ -26,7 +25,7 @@ class MovieBoradcastController extends ApiController
     public function store(StoreMovieBroadcastRequest $request)
     {
         try {
-            Movie::findOrFail($request->input('data.relationships.movie.id'));
+            Movie::findOrFail($request->input('data.relationships.movie.data.id'));
 
             return new MovieBroadcastResource(MovieBroadcast::create($request->attributeMap()));
 
