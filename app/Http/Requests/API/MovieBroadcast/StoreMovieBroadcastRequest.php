@@ -21,20 +21,24 @@ class StoreMovieBroadcastRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'data.attributes.channelNr' => 'required|integer',
             'data.attributes.broadcastsAt' => 'required|date',
-            'data.relationships.movie.id' => 'required|integer',
         ];
+
+        if($this->routeIs('movie-broadcasts.store')){
+            $rules['data.relationships.movie.data.id'] = 'required|integer';
+        }
+
+        return $rules;
     }
 
-    public function attributeMap(): array
+    public function attributeMap($movie_id = null): array
     {
         $map = [
             'data.attributes.channelNr' => 'channel_nr',
             'data.attributes.broadcastsAt' => 'broadcasts_at',
-
-            'data.relationships.movie.id' => 'movie_id'
+            'data.relationships.movie.data.id' => 'movie_id'
         ];
 
         $mappedAttributes = [];
@@ -42,6 +46,10 @@ class StoreMovieBroadcastRequest extends FormRequest
             if($this->has($key)){
                 $mappedAttributes[$attribute] = $this->input($key);
             }
+        }
+
+        if($movie_id){
+            $mappedAttributes['movie_id'] = $movie_id;
         }
 
         return $mappedAttributes;
