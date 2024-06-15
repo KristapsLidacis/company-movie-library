@@ -11,7 +11,7 @@ class StoreMovieBroadcastRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,28 @@ class StoreMovieBroadcastRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'data.attributes.channelNr' => 'required|integer',
+            'data.attributes.broadcastsAt' => 'required|date',
+            'data.relationships.movie.id' => 'required|integer',
         ];
+    }
+
+    public function attributeMap(): array
+    {
+        $map = [
+            'data.attributes.channelNr' => 'channel_nr',
+            'data.attributes.broadcastsAt' => 'broadcasts_at',
+
+            'data.relationships.movie.id' => 'movie_id'
+        ];
+
+        $mappedAttributes = [];
+        foreach($map as $key => $attribute){
+            if($this->has($key)){
+                $mappedAttributes[$attribute] = $this->input($key);
+            }
+        }
+
+        return $mappedAttributes;
     }
 }

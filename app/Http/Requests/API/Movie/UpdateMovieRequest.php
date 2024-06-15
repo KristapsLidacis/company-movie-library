@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\API\Movie;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class UpdateMovieRequest extends BaseMovieRequest
 {
     /**
