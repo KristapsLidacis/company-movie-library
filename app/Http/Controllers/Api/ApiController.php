@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 /**
  * Base API controller class
  */
 class ApiController extends Controller
 {
+    use AuthorizesRequests;
+
+    protected $policyClass;
     /**
      * Return a successful response with a 200 status code
      *
@@ -44,5 +48,10 @@ class ApiController extends Controller
             'message' => $message,
             'status' => $statusCode
         ], $statusCode);  
+    }
+
+    public function isAble($abillity, $targetModel)
+    {
+        return $this->authorize($abillity, [$targetModel, $this->policyClass]);
     }
 }

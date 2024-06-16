@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\RolesEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'roles',
     ];
 
     /**
@@ -43,6 +46,26 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'roles' => 'array',
         ];
+    }
+
+    public function getAbilities()
+    {
+        $abilities = [];
+
+        foreach ($this->roles ?? [] as $role) {
+            $roleEnum = match ($role) {
+                'editor' => RolesEnum::Editor,
+                'admin' => RolesEnum::Administrator,
+                default => null,
+            };
+
+            if ($roleEnum) {
+                $abilities = array_merge($abilities, $roleEnum->abilities());
+            }
+        }
+
+        return $abilities;
     }
 }

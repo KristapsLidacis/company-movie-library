@@ -6,11 +6,15 @@ use App\Http\Requests\API\MovieBroadcast\StoreMovieBroadcastRequest;
 use App\Http\Resources\Api\MovieBroadcastResource;
 use App\Models\Movie;
 use App\Models\MovieBroadcast;
+use App\Policies\MovieBroadcastPolicy;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Carbon;
 
 class MovieMovieBoradcastsController extends ApiController
 {
+    protected $policyClass = MovieBroadcastPolicy::class;
+
     /**
      * Display a listing of the resource.
      */
@@ -31,6 +35,8 @@ class MovieMovieBoradcastsController extends ApiController
         try {
             $movieBroadcast = MovieBroadcast::findOrFail($movie_broadcast_id);
 
+            $this->isAble('show', $movieBroadcast);
+
             if($movieBroadcast->movie_id != $movie_id){
                 return $this->error('Movie broadcast not found for this movie', 404);
             }
@@ -40,6 +46,11 @@ class MovieMovieBoradcastsController extends ApiController
             return $this->ok('Movie broadcast not found', [
                 'message' => 'Movie broadcast not found',
                 'error' => 404,
+            ]);
+        } catch (AuthorizationException $ex){
+            return $this->ok('Unauthorized', [
+                'error' => 'You are missing view privilages',
+                'status' => 401
             ]);
         }
     }
@@ -51,7 +62,9 @@ class MovieMovieBoradcastsController extends ApiController
     {
         try {
             
-           Movie::findOrFail($movie_id);
+            Movie::findOrFail($movie_id);
+            
+            $this->isAble('store', MovieBroadcast::class);
             
             return new MovieBroadcastResource(MovieBroadcast::create($request->attributeMap($movie_id)));
 
@@ -59,6 +72,11 @@ class MovieMovieBoradcastsController extends ApiController
             return $this->ok('Movie could not be found', [
                 'message' => 'Movie could not be found',
                 'error' => 401,
+            ]);
+        } catch (AuthorizationException $ex){
+            return $this->ok('Unauthorized', [
+                'error' => 'You are missing create privilages',
+                'status' => 401
             ]);
         }
     }

@@ -27,7 +27,7 @@ class AuthController extends ApiController
             [
                 'token' => $user->createToken(
                     'API token for' . $user->email,
-                    ['*'],
+                    $user->getAbilities(),
                     now()->addDays(3)
                 )->plainTextToken,
             ]

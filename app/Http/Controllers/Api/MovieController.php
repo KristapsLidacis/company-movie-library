@@ -6,6 +6,7 @@ use App\Models\Movie;
 use App\Http\Requests\API\Movie\StoreMovieRequest;
 use App\Http\Requests\API\Movie\UpdateMovieRequest;
 use App\Http\Resources\Api\MovieResource;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MovieController extends ApiController
@@ -32,12 +33,20 @@ class MovieController extends ApiController
     public function store(StoreMovieRequest $request)
     {
         try {
+
+            $this->isAble('store', Movie::class);
+
             return new MovieResource(Movie::create($request->attributeMap()));
 
         } catch (\Throwable $th) {
             return $this->ok('Movie could not be created', [
                 'message' => 'Movie could not be created',
                 'error' => 401,
+            ]);
+        } catch (AuthorizationException $ex){
+            return $this->ok('Unauthorized', [
+                'error' => 'You are missing create privilages',
+                'status' => 401
             ]);
         }
     }
@@ -50,6 +59,8 @@ class MovieController extends ApiController
         try {
             $movie = Movie::findOrFail($movie_id);
 
+            $this->isAble('show', $movie);
+
             return new MovieResource($movie);
 
         } catch (ModelNotFoundException $th) {
@@ -57,6 +68,11 @@ class MovieController extends ApiController
             return $this->ok('Movie not found', [
                 'message' => 'Movie not found',
                 'error' => 401,
+            ]);
+        } catch (AuthorizationException $ex){
+            return $this->ok('Unauthorized', [
+                'error' => 'You are missing view privilages',
+                'status' => 401
             ]);
         }
     }
@@ -69,6 +85,8 @@ class MovieController extends ApiController
         try {
             $movie = Movie::findOrFail($movie_id);
 
+            $this->isAble('update', $movie);
+
             $movie->update($request->attributeMap());
 
             return new MovieResource($movie);
@@ -76,6 +94,11 @@ class MovieController extends ApiController
         } catch (ModelNotFoundException $th) {
             return $this->ok('Movie not found', [
                 'error' => 'Movie not found',
+                'status' => 401
+            ]);
+        } catch (AuthorizationException $ex){
+            return $this->ok('Unauthorized', [
+                'error' => 'You are missing update privilages',
                 'status' => 401
             ]);
         }
@@ -88,6 +111,9 @@ class MovieController extends ApiController
     {
         try {
             $movie = Movie::findOrFail($movie_id);
+
+            $this->isAble('destroy', $movie);
+
             $movie->delete();
 
             return $this->ok('Movie deleted');
@@ -96,6 +122,11 @@ class MovieController extends ApiController
 
             return $this->ok('Movie not found', [
                 'error' => 'Movie not found',
+                'status' => 401
+            ]);
+        } catch (AuthorizationException $ex){
+            return $this->ok('Unauthorized', [
+                'error' => 'You are missing delete privilages',
                 'status' => 401
             ]);
         }

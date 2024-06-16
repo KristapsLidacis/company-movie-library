@@ -18,8 +18,19 @@ class DatabaseSeeder extends Seeder
 
         if(User::get()->isEmpty()){
             User::factory()->create([
-                'name' => 'Test User',
-                'email' => 'test@example.com',
+                'name' => 'Editor User',
+                'email' => 'editor@example.com',
+                'roles' => [
+                    'editor'
+                ],
+            ]);
+
+            User::factory()->create([
+                'name' => 'Administrator User',
+                'email' => 'admin@example.com',
+                'roles' => [
+                    'admin'
+                ],
             ]);
         }
 
