@@ -50,22 +50,33 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Get the abilities of the user based on their roles.
+     *
+     * @return array<string>
+     */
     public function getAbilities()
     {
+        // Define abilities array
         $abilities = [];
 
+        // Loop through the roles of the user
         foreach ($this->roles ?? [] as $role) {
+
+            // Match the role to the corresponding enum value
             $roleEnum = match ($role) {
                 'editor' => RolesEnum::Editor,
                 'admin' => RolesEnum::Administrator,
                 default => null,
             };
 
+            // If the role enum is not null, merge the abilities
             if ($roleEnum) {
                 $abilities = array_merge($abilities, $roleEnum->abilities());
             }
         }
 
+        // Return abilities array
         return $abilities;
     }
 }

@@ -97,7 +97,7 @@ class MovieController extends ApiController
 
         } catch (ModelNotFoundException $th) {
 
-            // Return a message if catched Throwable
+            // Return a message if catched ModelNotFoundException
             return $this->ok('Movie not found', [
                 'message' => 'Movie not found',
                 'error' => 401,
@@ -136,7 +136,7 @@ class MovieController extends ApiController
 
         } catch (ModelNotFoundException $th) {
 
-            // Return a message if catched Throwable
+            // Return a message if catched ModelNotFoundException
             return $this->ok('Movie not found', [
                 'error' => 'Movie not found',
                 'status' => 401
@@ -153,6 +153,10 @@ class MovieController extends ApiController
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @return JsonResponse
+     * @throws ModelNotFoundException If the movie is not found.
+     * @throws AuthorizationException If the user is not authorized to create a movie broadcast.
      */
     public function destroy($movie_id)
     {
@@ -172,7 +176,7 @@ class MovieController extends ApiController
 
         } catch (ModelNotFoundException $th) {
 
-            // Return a message if catched Throwable
+            // Return a message if catched ModelNotFoundException
             return $this->ok('Movie not found', [
                 'error' => 'Movie not found',
                 'status' => 401
