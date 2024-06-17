@@ -1,66 +1,168 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+### Project Description
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This Laravel application manages a movie database, allowing users to interact with movies and their broadcast schedules via a RESTful API. It includes endpoints for listing movies, retrieving specific movies by ID, adding new movies, adding broadcast schedules for movies, and deleting movies.
+### Project Setup Instructions
 
-## About Laravel
+#### 1. Clone the Repository
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Clone your Laravel project repository and navigate to the project folder:
+```bash
+git clone <repository_url> 
+cd <project_folder>
+```
+#### 2. Install Dependencies
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Ensure PHP and Composer are installed, then install Laravel dependencies:
+```bash
+composer install
+```
+#### 3. Environment Configuration
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Copy the `.env.example` file to `.env` and configure your database connection:
+```bash
+cp .env.example .env
+```
+Update `.env` file with your database credentials:
+```dotenv
+DB_CONNECTION=mysql 
+DB_HOST=127.0.0.1 
+DB_PORT=3306 
+DB_DATABASE=your_database_name 
+DB_USERNAME=your_database_username 
+DB_PASSWORD=your_database_password
+```
+#### 4. Generate Application Key
 
-## Learning Laravel
+Generate the Laravel application key:
+```bash
+php artisan key:generate
+```
+#### 5. Run Migrations
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Run database migrations to create necessary tables:
+```bash
+php artisan migrate
+```
+Or run database migration to create necessary tables and fill database with test data:
+```bash
+php artisan migrate --seed
+```
+#### 6. Start Development Server
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Launch the Laravel development server:
+```bash
+php artisan serve
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Your application will be accessible at `http://localhost:8000` by default.**
 
-## Laravel Sponsors
+### API Endpoints
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+#### 1. List Movies
+Endpoint to retrieve a paginated list of movies, optionally filtered by title:
 
-### Premium Partners
+- **GET** `/api/movies`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Example:
+```plaintext
+GET http://localhost:8000/api/movies?page=1&title=example
+```
+#### 2. Retrieve Movie by ID
+Endpoint to fetch details of a specific movie by its ID:
 
-## Contributing
+- **GET** `/api/movies/{id}`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Example:
+```plaintext
+GET http://localhost:8000/api/movies/1
+```
+#### 3. Add a New Movie
+Endpoint to create a new movie with specified attributes:
 
-## Code of Conduct
+- **POST** `/api/movies`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Example Request Body:
+```json
+{     
+	"title": "Example Movie",     
+	"description": "A description of the movie.",     
+	"ageRestriction": "7", //Optional     
+	"rating": 8.5,     
+	"premieresAt": "2024-06-30 18:00:00" 
+}
+```
+#### 4. Add Movie Broadcast
+Endpoint to add a broadcast schedule for a specific movie:
 
-## Security Vulnerabilities
+- **POST** `/api/movies/{id}/broadcasts`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Example Request Body:
+```json
+{     
+	"channelNr": 1,     
+	"broadcastsAt": "2024-07-01 20:00:00" 
+}
+```
+#### 5. Delete Movie
+Endpoint to delete a movie by its ID:
 
-## License
+- **DELETE** `/api/movies/{id}`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```plaintext
+DELETE http://localhost:8000/api/movies/1
+```
+
+### Adding/Changing Roles and Abilities
+
+#### 1. Define Enums
+
+Firstly, define enums for roles and abilities. To add new Abilities to roles you need to provide them in RolesEnum.php file in abilities() function
+```php
+// app/Enums/AbilitiesEnum.php
+namespace App\Enums;
+
+enum AbilitiesEnum
+
+{
+    public const ViewMovies = 'movies:view';
+    public const CreateMovies = 'movies:create';
+    public const UpdateMovies = 'movies:update';
+    public const DeleteMovies = 'movies:delete';
+    public const ViewMovieBroadcast = 'movie-broadcast:view';
+    public const CreateMovieBroadcast = 'movie-broadcast:create';
+    // Add mor abilities as needed
+}
+
+```
+```php
+// app/Enums/RolesEnum.php 
+namespace App\Enums; 
+
+class RolesEnum 
+{ 
+	const EDITOR = 'editor'; 
+	const ADMINISTRATOR = 'admin'; 
+	// Add more roles as needed
+
+    public function abilities(): array
+    {
+        return match ($this) {
+            self::Editor => [
+                AbilitiesEnum::ViewMovies,
+                AbilitiesEnum::CreateMovies,
+                AbilitiesEnum::UpdateMovies,
+                AbilitiesEnum::ViewMovieBroadcast,
+            ],
+            self::Administrator => [
+                AbilitiesEnum::ViewMovies,
+                AbilitiesEnum::CreateMovies,
+                AbilitiesEnum::UpdateMovies,
+                AbilitiesEnum::DeleteMovies,
+                AbilitiesEnum::ViewMovieBroadcast,
+                AbilitiesEnum::CreateMovieBroadcast,
+            ],
+            default => [],
+        };
+    }
+}
+```
