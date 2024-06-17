@@ -58,60 +58,7 @@ php artisan serve
 
 ### API Endpoints
 
-#### 1. List Movies
-Endpoint to retrieve a paginated list of movies, optionally filtered by title:
-
-- **GET** `/api/movies`
-
-Example:
-```plaintext
-GET http://localhost:8000/api/movies?page=1&title=example
-```
-#### 2. Retrieve Movie by ID
-Endpoint to fetch details of a specific movie by its ID:
-
-- **GET** `/api/movies/{id}`
-
-Example:
-```plaintext
-GET http://localhost:8000/api/movies/1
-```
-#### 3. Add a New Movie
-Endpoint to create a new movie with specified attributes:
-
-- **POST** `/api/movies`
-
-Example Request Body:
-```json
-{     
-	"title": "Example Movie",     
-	"description": "A description of the movie.",     
-	"ageRestriction": "7", //Optional     
-	"rating": 8.5,     
-	"premieresAt": "2024-06-30 18:00:00" 
-}
-```
-#### 4. Add Movie Broadcast
-Endpoint to add a broadcast schedule for a specific movie:
-
-- **POST** `/api/movies/{id}/broadcasts`
-
-Example Request Body:
-```json
-{     
-	"channelNr": 1,     
-	"broadcastsAt": "2024-07-01 20:00:00" 
-}
-```
-#### 5. Delete Movie
-Endpoint to delete a movie by its ID:
-
-- **DELETE** `/api/movies/{id}`
-
-```plaintext
-DELETE http://localhost:8000/api/movies/1
-```
-
+**To see all available API Endpoints you need to import into Postman application using provided API_routes.postman_collection.json file in application base directory**
 ### Adding/Changing Roles and Abilities
 
 #### 1. Define Enums
