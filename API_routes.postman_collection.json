@@ -1,0 +1,582 @@
+{
+	"info": {
+		"_postman_id": "b76cba6f-8019-4277-818d-85b8dbbeba1e",
+		"name": "Company movie library",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33879006"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "editor@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://company-movie-library.test/api/login",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://company-movie-library.test/api/logout",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movies",
+			"item": [
+				{
+					"name": "Movies",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://company-movie-library.test/api/movies",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://company-movie-library.test/api/movies/12",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"movies",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\": {\r\n        \"attributes\": {\r\n            \"title\": \"Cumque quod ut iusto sint iusto.\",\r\n            \"rating\": 7.1,\r\n            \"ageRestriction\": \"7\",\r\n            \"description\": \"Et magni quod distinctio laudantium voluptate. Nam sequi error voluptatem sint et.\",\r\n            \"premieresAt\": \"2024-11-22 23:20:25\"\r\n        }   \r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://company-movie-library.test/api/movies",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\": {\r\n        \"attributes\": {\r\n            \"rating\": 78.3,\r\n            \"description\": \"2\",\r\n            \"ageRestriction\": \"16\"\r\n        }   \r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://company-movie-library.test/api/movies/12",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"movies",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://company-movie-library.test/api/movies/12",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"movies",
+								"12"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movie broadcasts",
+			"item": [
+				{
+					"name": "Movie Broadcasts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://company-movie-library.test/api/movie-broadcasts",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"movie-broadcasts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movie Broadcast",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://company-movie-library.test/api/movie-broadcasts/21",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"movie-broadcasts",
+								"21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movie Broadcast",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\": {\r\n        \"attributes\": {\r\n            \"channelNr\": 88,\r\n            \"broadcastsAt\": \"2024-06-21 08:14:49\"\r\n        },\r\n        \"relationships\": {\r\n            \"movie\": {\r\n                \"data\": {\r\n                    \"id\": 1\r\n                }\r\n            }\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://company-movie-library.test/api/movie-broadcasts",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"movie-broadcasts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movie/Movie broadcasts",
+			"item": [
+				{
+					"name": "Movie/Movie Broadcasts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://company-movie-library.test/api/movies/1/movie-broadcasts",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"movies",
+								"1",
+								"movie-broadcasts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movie/Movie Broadcast",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://company-movie-library.test/api/movies/1/movie-broadcasts/15",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"movies",
+								"1",
+								"movie-broadcasts",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movie/Movie Broadcast",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Bearer}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\": {\r\n        \"attributes\": {\r\n            \"channelNr\": 28,\r\n            \"broadcastsAt\": \"2024-12-22 04:09:32\"\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://company-movie-library.test/api/movies/1/movie-broadcasts",
+							"protocol": "http",
+							"host": [
+								"company-movie-library",
+								"test"
+							],
+							"path": [
+								"api",
+								"movies",
+								"1",
+								"movie-broadcasts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Bearer",
+			"value": "1|ez1TkTis68YSpyL3TmDm4pPpe0k7e1kwlTF1FifL94e4b05a"
+		}
+	]
+}
